@@ -48,7 +48,7 @@ function App() {
               DisplayNotification(data, didLoad);
               console.log(data);
               didLoad.current = false;
-            }, 3600000);
+            }, 900000);
           }
         }
       });
@@ -58,7 +58,7 @@ function App() {
           DisplayNotification(data, didLoad);
           console.log(data);
           didLoad.current = false;
-        }, 3600000);
+        }, 900000);
       }
     }
   }, [data]);
