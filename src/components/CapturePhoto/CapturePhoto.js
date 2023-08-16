@@ -3,6 +3,8 @@ import { Button } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
 import { perf } from "../../firebaseConfig";
 
+import { SaveImage } from "../../utils/CameraUtil";
+
 import "./CapturePhoto.css";
 
 const CapturePhoto = ({ setCameraActive, cameraRef, photoRef }) => {
@@ -12,30 +14,7 @@ const CapturePhoto = ({ setCameraActive, cameraRef, photoRef }) => {
     <div className="CapturePhoto">
       <p>
         <Button
-          onClick={async function () {
-            const saveImageInStorageTrace = perf.trace(
-              "save_image_in_storage"
-            );
-            saveImageInStorageTrace.start();
-
-            let video = cameraRef.current;
-
-            pic.getContext("2d").drawImage(video, 0, 0, 120, 90);
-
-            localStorage.setItem("savedPic", pic.toDataURL("image/jpeg"));
-
-            const stream = video.srcObject;
-            const tracks = stream.getTracks();
-
-            for (let i = 0; i < tracks.length; i++) {
-              let track = tracks[i];
-              track.stop();
-            }
-
-            video.srcObject = null;
-            setCameraActive(false);
-            saveImageInStorageTrace.stop();
-          }}
+          onClick={() => SaveImage(pic, cameraRef, setCameraActive)}
           variant="contained"
           size="small"
           endIcon={<PhotoCamera />}
@@ -51,7 +30,6 @@ const CapturePhoto = ({ setCameraActive, cameraRef, photoRef }) => {
 };
 
 CapturePhoto.propTypes = {};
-
 CapturePhoto.defaultProps = {};
 
 export default CapturePhoto;

@@ -6,7 +6,7 @@ export const MicrofonOn = (transcriptRef, setMicActive) => {
   const newRec = new recognition();
   newRec.lang = "de-DE";
 
-  const microphoneActivationTrace = perf.trace("microphone_activation");
+  const microphoneActivationTrace = perf.trace("activate_microphone");
   microphoneActivationTrace.start();
 
   newRec.start();
@@ -14,7 +14,7 @@ export const MicrofonOn = (transcriptRef, setMicActive) => {
   microphoneActivationTrace.stop();
 
   newRec.onresult = (event) => {
-    const microphoneRecognitionTrace = perf.trace("microphone_recognition");
+    const microphoneRecognitionTrace = perf.trace("check_microphone_recognition");
     microphoneRecognitionTrace.start();
 
     transcriptRef.current = event.results[0][0].transcript;

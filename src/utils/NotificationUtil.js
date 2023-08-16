@@ -1,7 +1,7 @@
 import { perf } from "../firebaseConfig";
 
 export const DisplayNotification = (currentData, didLoad) => {
-    const pushNotificationTrace = perf.trace("push_notification");
+    const pushNotificationTrace = perf.trace("create_push_notification");
     pushNotificationTrace.start();
   
     if (Notification.permission === "granted") {

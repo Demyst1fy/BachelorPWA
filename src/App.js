@@ -19,10 +19,10 @@ function App() {
   const photoRef = useRef(null);
 
   useEffect(() => {
-    const getImageFromStorageTrace = perf.trace("get_image_from_storage");
+    const getImageFromStorageTrace = perf.trace("get_latest_image_from_storage");
     getImageFromStorageTrace.start();
     
-    var dataURL = localStorage.getItem("savedPic");
+    var dataURL = localStorage.getItem("latest_image_uri");
     var img = new Image();
     img.src = dataURL;
     img.onload = function () {

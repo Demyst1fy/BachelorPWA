@@ -35,8 +35,8 @@ export function LocationMarker({ data, currentPosition, transcriptRef }) {
 
   useEffect(() => {
     if (clicked === false && transcriptRef.current !== "") {
-      const apiCallTranscriptedLocationNameTrace = perf.trace("call_openweather_api_via_transcripted_location_name");
-      apiCallTranscriptedLocationNameTrace.start()
+      const apiCallLocationNameTrace = perf.trace("call_openweather_api_via_location_name");
+      apiCallLocationNameTrace.start()
 
       let link = `https://api.openweathermap.org/data/2.5/weather?q=${transcriptRef.current}&lang=de&units=metric&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`;
       console.log(link);
@@ -52,10 +52,10 @@ export function LocationMarker({ data, currentPosition, transcriptRef }) {
 
       transcriptRef.current = "";
       
-      apiCallTranscriptedLocationNameTrace.stop()
+      apiCallLocationNameTrace.stop()
     } else if (clicked === true && position !== null) {
-      const apiCallClickedPositionTrace = perf.trace("call_openweather_api_via_clicked_position");
-      apiCallClickedPositionTrace.start()
+      const apiCallLocationLatLonTrace = perf.trace("call_openweather_api_via_location_latlon");
+      apiCallLocationLatLonTrace.start()
 
       let link = `https://api.openweathermap.org/data/2.5/weather?lat=${position?.lat}&lon=${position?.lng}&lang=de&units=metric&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`;
       console.log(link);
@@ -67,7 +67,7 @@ export function LocationMarker({ data, currentPosition, transcriptRef }) {
         .catch((error) => console.error(error));
       setClicked(false);
 
-      apiCallClickedPositionTrace.stop()
+      apiCallLocationLatLonTrace.stop()
     }
   }, [position, transcriptRef.current]);
 
