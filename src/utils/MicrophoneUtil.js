@@ -8,7 +8,6 @@ export const MicrofonOn = (transcriptRef, setMicActive) => {
     window.SpeechRecognition || window.webkitSpeechRecognition;
   const newRec = new recognition();
   newRec.lang = "de-DE";
-
   newRec.start();
 
   microphoneActivationTrace.stop();
