@@ -27,8 +27,6 @@ export const GetImage = (photo) => {
   getImageFromStorageTrace.start();
 
   var dataURL = localStorage.getItem("latest_image_uri");
-
-  getImageFromStorageTrace.stop();
   
   var img = new Image();
   img.src = dataURL;
@@ -36,4 +34,6 @@ export const GetImage = (photo) => {
     if (photo != null)
       photo.getContext("2d").drawImage(img, 0, 0);
   };
+  
+  getImageFromStorageTrace.stop();
 };
