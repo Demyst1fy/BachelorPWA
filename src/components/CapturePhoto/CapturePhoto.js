@@ -1,9 +1,8 @@
 import React from "react";
 import { Button } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
-import { perf } from "../../firebaseConfig";
 
-import { SaveImage } from "../../utils/CameraUtil";
+import { SaveImage } from "../../utils/StorageUtil";
 
 import "./CapturePhoto.css";
 

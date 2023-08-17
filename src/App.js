@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { perf } from "./firebaseConfig";
 
 import "./App.css";
 
@@ -9,6 +8,7 @@ import CapturePhoto from "./components/CapturePhoto/CapturePhoto";
 
 import { CurrentLocation, WeatherFromLocation } from "./utils/LocationUtil";
 import { DisplayNotification } from "./utils/NotificationUtil";
+import { GetImage } from "./utils/StorageUtil";
 
 function App() {
   let currentLocation = CurrentLocation();
@@ -19,18 +19,7 @@ function App() {
   const photoRef = useRef(null);
 
   useEffect(() => {
-    const getImageFromStorageTrace = perf.trace("get_latest_image_from_storage");
-    getImageFromStorageTrace.start();
-    
-    var dataURL = localStorage.getItem("latest_image_uri");
-    var img = new Image();
-    img.src = dataURL;
-    img.onload = function () {
-      if (photoRef.current != null)
-        photoRef.current.getContext("2d").drawImage(img, 0, 0);
-    };
-
-    getImageFromStorageTrace.stop();
+    GetImage(photoRef.current)
   });
 
   const [cameraActive, setCameraActive] = useState(false);

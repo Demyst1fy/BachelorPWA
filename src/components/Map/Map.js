@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { Button } from "@mui/material";
 import { MicNone, Mic, PhotoCamera } from "@mui/icons-material";
 
-import { LocationMarker, ChangeView } from "../../utils/MapUtils";
+import { LocationMarker, ChangeView } from "../../utils/MapUtil";
 import { MicrofonOn } from "../../utils/MicrophoneUtil";
 import { GetVideo } from "../../utils/CameraUtil";
 
