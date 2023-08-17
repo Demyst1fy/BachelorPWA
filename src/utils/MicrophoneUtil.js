@@ -1,13 +1,13 @@
 import { perf } from "../firebaseConfig";
 
 export const MicrofonOn = (transcriptRef, setMicActive) => {
+  const microphoneActivationTrace = perf.trace("activate_microphone");
+  microphoneActivationTrace.start();
+  
   const recognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
   const newRec = new recognition();
   newRec.lang = "de-DE";
-
-  const microphoneActivationTrace = perf.trace("activate_microphone");
-  microphoneActivationTrace.start();
 
   newRec.start();
 
