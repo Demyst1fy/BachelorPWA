@@ -12,7 +12,6 @@ export const MicrofonOn = (transcriptRef, setMicActive) => {
 
   microphoneActivationTrace.stop();
 
-  newRec.
   newRec.onresult = (event) => {
     const microphoneRecognitionTrace = perf.trace("check_microphone_recognition");
     microphoneRecognitionTrace.start();
