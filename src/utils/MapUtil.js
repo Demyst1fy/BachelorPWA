@@ -104,7 +104,7 @@ export const LocationMarker = ({
                 <th>Luftdruck: </th>
                 <td>{locationData?.main?.pressure} hPa</td>
               </tr>
-              {/*<tr>
+              <tr>
                 <th>Wetter: </th>
                 <td>{locationData?.weather[0]?.description}</td>
                 <td>
@@ -119,7 +119,7 @@ export const LocationMarker = ({
                     alt="Weather Icon"
                   />
                 </td>
-                  </tr>*/}
+              </tr>
             </tbody>
           </table>
         </div>

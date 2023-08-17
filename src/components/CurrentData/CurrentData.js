@@ -31,7 +31,7 @@ const CurrentData = ({ currentData, photo }) => {
               {currentData?.main?.pressure} hPa
             </td>
           </tr>
-          {/*<tr>
+          <tr>
             <th style={{ textAlign: "left" }}>Wetter: </th>
             <td style={{ textAlign: "left", verticalAlign: "middle" }}>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -51,7 +51,7 @@ const CurrentData = ({ currentData, photo }) => {
                 />
               </div>
             </td>
-                </tr>*/}
+          </tr>
           <tr>
             <th style={{ textAlign: "left" }}>Foto: </th>
             <td style={{ textAlign: "left" }}>
