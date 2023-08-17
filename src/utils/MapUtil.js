@@ -22,13 +22,16 @@ export const ChangeView = ({ currentLocation }) => {
 
 export const LocationMarker = ({
   currentData,
-  currentPosition,
+  currentLocation,
   transcript,
   setTranscript,
 }) => {
-  const [position, setPosition] = useState(
-    new L.LatLng(currentPosition.lat, currentPosition.lng)
-  );
+  const [position, setPosition] = useState(new L.LatLng(0, 0));
+
+  useEffect(() => {
+    setPosition(new L.LatLng(currentLocation?.lat, currentLocation?.lng));
+  }, [currentLocation?.lat, currentLocation?.lng]);
+
   const [clicked, setClicked] = useState(false);
 
   const map = useMapEvents({
@@ -40,27 +43,35 @@ export const LocationMarker = ({
   });
 
   const [locationData, setLocationData] = useState(null);
+  useEffect(() => {
+    setLocationData(currentData);
+  }, [currentData]);
 
   useEffect(() => {
     if (clicked === false && transcript !== "") {
       GetWeatherDataFromLocationName(transcript).then((res) => {
-        setLocationData(res);
-        setPosition(new L.LatLng(res?.coord?.lat, res?.coord?.lon));
+        if (res !== null) {
+          setLocationData(res);
+          setPosition(new L.LatLng(res?.coord?.lat, res?.coord?.lon));
+        }
       });
 
       setTranscript("");
+      console.log("AFTER 2: ", position, locationData);
     } else if (clicked === true && position !== null) {
       GetWeatherDataFromLocationLatLon(position).then((res) => {
-        setLocationData(res);
+        if (res !== null) {
+          setLocationData(res);
+        }
       });
 
       setClicked(false);
     }
-  }, [position, transcript, setTranscript, clicked]);
+  }, [position, transcript, locationData]);
 
-  return (position.lat === currentPosition.lat &&
-    position.lng === currentPosition.lng) ||
-    position === null ? null : (
+  console.log(position.lat, position.lng);
+
+  return position === null || locationData === null ? null : (
     <Marker
       ref={(ref) => {
         if (ref) {

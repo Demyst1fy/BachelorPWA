@@ -13,7 +13,7 @@ export const GetWeatherDataFromLocationLatLon = async (position) => {
 
   apiCallLocationLatLonTrace.stop();
 
-  return json;
+  return json?.cod === 200 ? json : null;
 };
 
 export const GetWeatherDataFromLocationName = async (name) => {
@@ -30,5 +30,5 @@ export const GetWeatherDataFromLocationName = async (name) => {
 
   apiCallLocationNameTrace.stop();
 
-  return json;
+  return json?.cod === 200 ? json : null;
 };

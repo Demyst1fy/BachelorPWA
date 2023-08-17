@@ -46,10 +46,9 @@ const Map = ({
         )}
         <LocationMarker
           currentData={currentData}
-          currentPosition={currentLocation}
+          currentLocation={currentLocation}
           transcript={transcript}
           setTranscript={setTranscript}
-          setMicActive={setMicActive}
         />
         <ChangeView currentLocation={currentLocation} />
       </MapContainer>
