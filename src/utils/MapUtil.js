@@ -53,7 +53,7 @@ export function LocationMarker({ data, currentPosition, transcriptRef }) {
         .catch((error) => console.error(error));
 
       apiCallLocationNameTrace.stop();
-      
+
       transcriptRef.current = "";
     } else if (clicked === true && position !== null) {
       const apiCallLocationLatLonTrace = perf.trace(
@@ -69,9 +69,9 @@ export function LocationMarker({ data, currentPosition, transcriptRef }) {
           if (json?.cod === 200) setClickedLocationData(json);
         })
         .catch((error) => console.error(error));
-      setClicked(false);
 
       apiCallLocationLatLonTrace.stop();
+      setClicked(false);
     }
   }, [position, transcriptRef.current]);
 
