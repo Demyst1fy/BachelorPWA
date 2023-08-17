@@ -1,6 +1,6 @@
 import { perf } from "../firebaseConfig";
 
-export const MicrofonOn = (transcriptRef, setMicActive) => {
+export const MicrofonOn = (setTranscript, setMicActive) => {
   const microphoneActivationTrace = perf.trace("activate_microphone");
   microphoneActivationTrace.start();
 
@@ -16,7 +16,7 @@ export const MicrofonOn = (transcriptRef, setMicActive) => {
     const microphoneRecognitionTrace = perf.trace("check_microphone_recognition");
     microphoneRecognitionTrace.start();
 
-    transcriptRef.current = event.results[0][0].transcript;
+    setTranscript(event.results[0][0].transcript);
     setMicActive(false);
     newRec.stop();
 

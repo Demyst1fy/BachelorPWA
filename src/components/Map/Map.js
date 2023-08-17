@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { Button } from "@mui/material";
 import { MicNone, Mic, PhotoCamera } from "@mui/icons-material";
@@ -20,18 +20,18 @@ Moment.locale("de-at");
 
 const Map = ({
   currentLocation,
-  data,
+  currentData,
   cameraRef,
   cameraActive,
   setCameraActive,
 }) => {
-  const transcriptRef = useRef("");
+  const [transcript, setTranscript] = useState("");
   const [micActive, setMicActive] = useState(false);
 
   return (
     <div className="Map">
       <MapContainer
-        center={[currentLocation.lon, currentLocation.lat]}
+        center={[currentLocation.lng, currentLocation.lat]}
         minZoom={3}
         maxBounds={L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180))}
         zoom={currentLocation.zoom}
@@ -41,22 +41,21 @@ const Map = ({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png"
         />
-        {data && (
-          <div>
-            <Marker position={[currentLocation.lat, currentLocation.lon]} />
-          </div>
+        {currentData && (
+          <Marker position={[currentLocation.lat, currentLocation.lng]} />
         )}
         <LocationMarker
-          data={data}
+          currentData={currentData}
           currentPosition={currentLocation}
-          transcriptRef={transcriptRef}
+          transcript={transcript}
+          setTranscript={setTranscript}
           setMicActive={setMicActive}
         />
         <ChangeView currentLocation={currentLocation} />
       </MapContainer>
       <Button
         onClick={function () {
-          MicrofonOn(transcriptRef, setMicActive);
+          MicrofonOn(setTranscript, setMicActive);
           setMicActive(true);
         }}
         disabled={!micActive ? false : true}

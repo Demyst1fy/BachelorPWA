@@ -1,25 +1,33 @@
 import { useState, useEffect } from "react";
 import { Marker, Popup, useMap, useMapEvents } from "react-leaflet";
-import { perf } from "../firebaseConfig";
 
 // Libraries
 import L from "leaflet";
+import {
+  GetWeatherDataFromLocationLatLon,
+  GetWeatherDataFromLocationName,
+} from "./DownloadUtil";
 
-export function ChangeView({ currentLocation }) {
+export const ChangeView = ({ currentLocation }) => {
   const map = useMap();
   useEffect(() => {
     map.setView(
-      new L.LatLng(currentLocation.lat, currentLocation.lon),
+      new L.LatLng(currentLocation.lat, currentLocation.lng),
       currentLocation.zoom
     );
   }, [map, currentLocation]);
 
   return null;
-}
+};
 
-export function LocationMarker({ data, currentPosition, transcriptRef }) {
+export const LocationMarker = ({
+  currentData,
+  currentPosition,
+  transcript,
+  setTranscript,
+}) => {
   const [position, setPosition] = useState(
-    new L.LatLng(currentPosition.lat, currentPosition.lon)
+    new L.LatLng(currentPosition.lat, currentPosition.lng)
   );
   const [clicked, setClicked] = useState(false);
 
@@ -31,51 +39,28 @@ export function LocationMarker({ data, currentPosition, transcriptRef }) {
     },
   });
 
-  const [clickedLocationData, setClickedLocationData] = useState(data);
+  const [locationData, setLocationData] = useState(null);
 
   useEffect(() => {
-    if (clicked === false && transcriptRef.current !== "") {
-      const apiCallLocationNameTrace = perf.trace(
-        "call_openweather_api_via_location_name"
-      );
-      apiCallLocationNameTrace.start();
+    if (clicked === false && transcript !== "") {
+      GetWeatherDataFromLocationName(transcript).then((res) => {
+        setLocationData(res);
+        setPosition(new L.LatLng(res?.coord?.lat, res?.coord?.lon));
+      });
 
-      let link = `https://api.openweathermap.org/data/2.5/weather?q=${transcriptRef.current}&lang=de&units=metric&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`;
-      console.log(link);
-      fetch(link)
-        .then((response) => response.json())
-        .then((json) => {
-          if (json?.cod === 200) {
-            setClickedLocationData(json);
-            setPosition(new L.LatLng(json?.coord?.lat, json?.coord?.lon));
-          }
-        })
-        .catch((error) => console.error(error));
-
-      apiCallLocationNameTrace.stop();
-
-      transcriptRef.current = "";
+      setTranscript("");
     } else if (clicked === true && position !== null) {
-      const apiCallLocationLatLonTrace = perf.trace(
-        "call_openweather_api_via_location_latlon"
-      );
-      apiCallLocationLatLonTrace.start();
+      GetWeatherDataFromLocationLatLon(position).then((res) => {
+        setLocationData(res);
+      });
 
-      let link = `https://api.openweathermap.org/data/2.5/weather?lat=${position?.lat}&lon=${position?.lng}&lang=de&units=metric&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`;
-      console.log(link);
-      fetch(link)
-        .then((response) => response.json())
-        .then((json) => {
-          if (json?.cod === 200) setClickedLocationData(json);
-        })
-        .catch((error) => console.error(error));
-
-      apiCallLocationLatLonTrace.stop();
       setClicked(false);
     }
-  }, [position, transcriptRef.current]);
+  }, [position, transcript, setTranscript, clicked]);
 
-  return position === null ? null : (
+  return (position.lat === currentPosition.lat &&
+    position.lng === currentPosition.lng) ||
+    position === null ? null : (
     <Marker
       ref={(ref) => {
         if (ref) {
@@ -90,44 +75,44 @@ export function LocationMarker({ data, currentPosition, transcriptRef }) {
             <tbody>
               <tr>
                 <th>Standort: </th>
-                <td>{clickedLocationData?.name}</td>
+                <td>{locationData?.name}</td>
               </tr>
               <tr>
                 <th>Temperatur: </th>
-                <td>{clickedLocationData?.main?.temp} °C</td>
+                <td>{locationData?.main?.temp} °C</td>
               </tr>
               <tr>
                 <th>Feuchtigkeit: </th>
-                <td>{clickedLocationData?.main?.humidity} %</td>
+                <td>{locationData?.main?.humidity} %</td>
               </tr>
               <tr>
                 <th>Windgeschwindigkeit: </th>
-                <td>{clickedLocationData?.wind?.speed} km/h</td>
+                <td>{locationData?.wind?.speed} km/h</td>
               </tr>
               <tr>
                 <th>Luftdruck: </th>
-                <td>{clickedLocationData?.main?.pressure} hPa</td>
+                <td>{locationData?.main?.pressure} hPa</td>
               </tr>
-              <tr>
+              {/*<tr>
                 <th>Wetter: </th>
-                <td>{clickedLocationData?.weather[0]?.description}</td>
+                <td>{locationData?.weather[0]?.description}</td>
                 <td>
                   <img
                     style={{ backgroundColor: "lightgray", borderRadius: 40 }}
                     src={
                       "https://openweathermap.org/img/wn/" +
-                      clickedLocationData?.weather[0]?.icon +
+                      locationData?.weather[0]?.icon +
                       ".png"
                     }
                     width="20"
                     alt="Weather Icon"
                   />
                 </td>
-              </tr>
+                  </tr>*/}
             </tbody>
           </table>
         </div>
       </Popup>
     </Marker>
   );
-}
+};

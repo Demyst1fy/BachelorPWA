@@ -1,6 +1,6 @@
 import { perf } from "../firebaseConfig";
 
-export function GetVideo(cameraRef) {
+export const GetVideo = (cameraRef) => {
   const cameraActivationTrace = perf.trace("activate_camera");
   cameraActivationTrace.start();
 

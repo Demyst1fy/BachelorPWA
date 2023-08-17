@@ -6,21 +6,30 @@ import Map from "./components/Map/Map";
 import CurrentData from "./components/CurrentData/CurrentData";
 import CapturePhoto from "./components/CapturePhoto/CapturePhoto";
 
-import { CurrentLocation, WeatherFromLocation } from "./utils/LocationUtil";
+import { CurrentLocation } from "./utils/LocationUtil";
+import { GetWeatherDataFromLocationLatLon } from "./utils/DownloadUtil";
 import { DisplayNotification } from "./utils/NotificationUtil";
 import { GetImage } from "./utils/StorageUtil";
 
 function App() {
   let currentLocation = CurrentLocation();
-  let data = WeatherFromLocation(currentLocation);
+
+  const [currentData, setCurrentData] = useState(null);
+
   let didLoad = useRef(false);
 
   const cameraRef = useRef(null);
   const photoRef = useRef(null);
 
   useEffect(() => {
-    GetImage(photoRef.current)
+    GetImage(photoRef.current);
   });
+
+  useEffect(() => {
+    GetWeatherDataFromLocationLatLon(currentLocation).then((res) => {
+      setCurrentData(res);
+    });
+  }, [currentLocation.lat, currentLocation.lng, currentLocation.zoom]);
 
   const [cameraActive, setCameraActive] = useState(false);
 
@@ -29,33 +38,37 @@ function App() {
       Notification.requestPermission(() => {
         if (Notification.permission === "granted") {
           if (
-            data !== null &&
-            data?.coord?.lat !== 0 &&
-            data?.coord?.lon !== 0
+            currentData !== null &&
+            currentData?.coord?.lat !== 0 &&
+            currentData?.coord?.lon !== 0
           ) {
             setInterval(() => {
-              DisplayNotification(data, didLoad);
-              console.log(data);
+              DisplayNotification(currentData, didLoad);
+              console.log(currentData);
               didLoad.current = false;
             }, 900000);
           }
         }
       });
     } else {
-      if (data !== null && data?.coord?.lat !== 0 && data?.coord?.lon !== 0) {
+      if (
+        currentData !== null &&
+        currentData?.coord?.lat !== 0 &&
+        currentData?.coord?.lon !== 0
+      ) {
         setInterval(() => {
-          DisplayNotification(data, didLoad);
-          console.log(data);
+          DisplayNotification(currentData, didLoad);
+          console.log(currentData);
           didLoad.current = false;
         }, 900000);
       }
     }
-  }, [data]);
-  
+  }, [currentData]);
+
   return (
     <div className="App">
       <header className="App-header">
-        {data && (
+        {currentData && (
           <div className="container">
             {cameraActive && (
               <CapturePhoto
@@ -66,10 +79,10 @@ function App() {
             )}
             {!cameraActive && (
               <div>
-                <CurrentData data={data} photo={photoRef} />
+                <CurrentData currentData={currentData} photo={photoRef} />
                 <Map
                   currentLocation={currentLocation}
-                  data={data}
+                  currentData={currentData}
                   cameraRef={cameraRef}
                   cameraActive={cameraActive}
                   setCameraActive={setCameraActive}
