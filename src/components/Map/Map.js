@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { Button } from "@mui/material";
-import { MicNone, Mic, PhotoCamera, Notifications } from "@mui/icons-material";
+import { Mic, PhotoCamera, Notifications } from "@mui/icons-material";
 
 import { LocationMarker, ChangeView } from "../../utils/MapUtil";
-import { MicrofonOn } from "../../utils/MicrophoneUtil";
+import { MicrophoneOn, MicrophoneOff } from "../../utils/MicrophoneUtil";
 import { GetVideo } from "../../utils/CameraUtil";
 import { DisplayNotification } from "../../utils/NotificationUtil";
 
@@ -54,7 +54,7 @@ const Map = ({
         <ChangeView currentLocation={currentLocation} />
       </MapContainer>
       <Button
-        onClick={function () {
+        onClick={() => {
           DisplayNotification(currentData);
         }}
         variant="contained"
@@ -65,20 +65,22 @@ const Map = ({
         Push-Benachrichtigung senden
       </Button>
       <Button
-        onClick={function () {
-          MicrofonOn(setTranscript, setMicActive);
-          setMicActive(true);
+        onClick={() => {
+          if (!micActive) {
+            MicrophoneOn(setTranscript, setMicActive);
+          } else {
+            MicrophoneOff(setTranscript, setMicActive);
+          }
         }}
-        disabled={!micActive ? false : true}
         variant="contained"
         size="small"
         style={{ margin: "5px", color: "#FFFFFF", backgroundColor: "#ED6C02" }}
         endIcon={<Mic />}
       >
-        {!micActive ? "Standort per Mikrofon scannen" : "Scannen..."}
+        {!micActive ? "Standort per Mikrofon scannen" : "Stopp Aufnahme..."}
       </Button>
       <Button
-        onClick={function () {
+        onClick={() => {
           GetVideo(cameraRef);
           setCameraActive(true);
         }}
