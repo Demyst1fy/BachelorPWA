@@ -57,7 +57,6 @@ export const LocationMarker = ({
       });
 
       setTranscript("");
-      console.log("AFTER 2: ", position, locationData);
     } else if (clicked === true && position !== null) {
       GetWeatherDataFromLocationLatLon(position).then((res) => {
         if (res !== null) {
@@ -68,8 +67,6 @@ export const LocationMarker = ({
       setClicked(false);
     }
   }, [position, transcript, locationData]);
-
-  console.log(position.lat, position.lng);
 
   return position === null || locationData === null ? null : (
     <Marker

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { Button } from "@mui/material";
-import { MicNone, Mic, PhotoCamera } from "@mui/icons-material";
+import { MicNone, Mic, PhotoCamera, Notifications } from "@mui/icons-material";
 
 import { LocationMarker, ChangeView } from "../../utils/MapUtil";
 import { MicrofonOn } from "../../utils/MicrophoneUtil";
 import { GetVideo } from "../../utils/CameraUtil";
+import { DisplayNotification } from "../../utils/NotificationUtil";
 
 // Libraries
 import L from "leaflet";
@@ -54,6 +55,17 @@ const Map = ({
       </MapContainer>
       <Button
         onClick={function () {
+          DisplayNotification(currentData);
+        }}
+        variant="contained"
+        size="small"
+        style={{ margin: "5px", color: "#FFFFFF", backgroundColor: "#BF371F" }}
+        endIcon={<Notifications />}
+      >
+        Push-Benachrichtigung senden
+      </Button>
+      <Button
+        onClick={function () {
           MicrofonOn(setTranscript, setMicActive);
           setMicActive(true);
         }}
@@ -61,7 +73,7 @@ const Map = ({
         variant="contained"
         size="small"
         style={{ margin: "5px", color: "#FFFFFF", backgroundColor: "#ED6C02" }}
-        endIcon={!micActive ? <MicNone /> : <Mic />}
+        endIcon={<Mic />}
       >
         {!micActive ? "Standort per Mikrofon scannen" : "Scannen..."}
       </Button>
