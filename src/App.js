@@ -23,9 +23,12 @@ function App() {
   });
 
   useEffect(() => {
-    GetWeatherDataFromLocationLatLon(currentLocation).then((res) => {
-      setCurrentData(res);
-    });
+    const timer = setTimeout(() => {
+      GetWeatherDataFromLocationLatLon(currentLocation).then((res) => {
+        setCurrentData(res);
+      });
+    }, 200);
+    return () => clearTimeout(timer);
   }, [currentLocation.lat, currentLocation.lng]);
 
   const [cameraActive, setCameraActive] = useState(false);

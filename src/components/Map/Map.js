@@ -6,7 +6,7 @@ import { Mic, PhotoCamera, Notifications } from "@mui/icons-material";
 import { LocationMarker, ChangeView } from "../../utils/MapUtil";
 import { MicrophoneOn, MicrophoneOff } from "../../utils/MicrophoneUtil";
 import { GetVideo } from "../../utils/CameraUtil";
-import { DisplayNotification } from "../../utils/NotificationUtil";
+import { CheckAndRequestNotification } from "../../utils/NotificationUtil";
 
 // Libraries
 import L from "leaflet";
@@ -55,7 +55,7 @@ const Map = ({
       </MapContainer>
       <Button
         onClick={() => {
-          DisplayNotification(currentData);
+          CheckAndRequestNotification(currentData);
         }}
         variant="contained"
         size="small"
