@@ -1,6 +1,6 @@
 import "./CurrentData.css";
 
-const CurrentData = ({ currentData, photo }) => {
+const CurrentData = ({ currentData, photoRef }) => {
   return (
     <div className="CurrentData leaflet-bottom leaflet-left">
       <table>
@@ -55,7 +55,7 @@ const CurrentData = ({ currentData, photo }) => {
           <tr>
             <th style={{ textAlign: "left" }}>Foto: </th>
             <td style={{ textAlign: "left" }}>
-              <canvas ref={photo} width="120" height="90" />
+              <canvas ref={photoRef} width="120" height="90" />
             </td>
           </tr>
         </tbody>

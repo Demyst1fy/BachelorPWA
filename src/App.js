@@ -8,18 +8,20 @@ import CapturePhoto from "./components/CapturePhoto/CapturePhoto";
 
 import { CurrentLocation } from "./utils/LocationUtil";
 import { GetWeatherDataFromLocationLatLon } from "./utils/DownloadUtil";
-import { GetImage } from "./utils/StorageUtil";
+import { GetImageFromStorage, LoadImage } from "./utils/StorageUtil";
 
 function App() {
   let currentLocation = CurrentLocation();
 
   const [currentData, setCurrentData] = useState(null);
 
-  const cameraRef = useRef(null);
+  const videoRef = useRef(null);
   const photoRef = useRef(null);
 
   useEffect(() => {
-    GetImage(photoRef.current);
+    var latestImage = GetImageFromStorage();
+
+    LoadImage(photoRef, latestImage);
   });
 
   useEffect(() => {
@@ -41,17 +43,17 @@ function App() {
             {cameraActive && (
               <CapturePhoto
                 setCameraActive={setCameraActive}
-                cameraRef={cameraRef}
+                videoRef={videoRef}
                 photoRef={photoRef}
               />
             )}
             {!cameraActive && (
               <div>
-                <CurrentData currentData={currentData} photo={photoRef} />
+                <CurrentData currentData={currentData} photoRef={photoRef} />
                 <Map
                   currentLocation={currentLocation}
                   currentData={currentData}
-                  cameraRef={cameraRef}
+                  videoRef={videoRef}
                   cameraActive={cameraActive}
                   setCameraActive={setCameraActive}
                 />

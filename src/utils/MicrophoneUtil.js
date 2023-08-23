@@ -19,8 +19,6 @@ export const MicrophoneOn = (setTranscript, setMicActive) => {
     );
     microphoneRecognitionTrace.start();
 
-    console.log(event.results[0][0].transcript)
-
     setTranscript(event.results[0][0].transcript);
     setMicActive(false);
     newRec.stop();

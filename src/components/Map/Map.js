@@ -22,7 +22,7 @@ Moment.locale("de-at");
 const Map = ({
   currentLocation,
   currentData,
-  cameraRef,
+  videoRef,
   cameraActive,
   setCameraActive,
 }) => {
@@ -81,7 +81,7 @@ const Map = ({
       </Button>
       <Button
         onClick={() => {
-          GetVideo(cameraRef);
+          GetVideo(videoRef);
           setCameraActive(true);
         }}
         disabled={!cameraActive ? false : true}

@@ -21,5 +21,5 @@ export const GetVideo = (cameraRef) => {
       console.error("error:", err);
     });
 
-    cameraActivationTrace.stop();
-}
+  cameraActivationTrace.stop();
+};

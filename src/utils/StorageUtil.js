@@ -1,39 +1,50 @@
 import { perf } from "../firebaseConfig";
 
-export const SaveImage = async (pic, cameraRef, setCameraActive) => {
+const CreateImage = (photo, video) => {
+  const createImageTrace = perf.trace("create_image");
+  createImageTrace.start();
+
+  photo.getContext("2d").drawImage(video, 0, 0, 120, 90);
+  let picToDataURL = photo.toDataURL("image/jpeg");
+
+  createImageTrace.stop();
+
+  return picToDataURL;
+};
+
+export const LoadImage = (photoRef, latestImage) => {
+  let photo = photoRef.current;
+
+  const loadImageTrace = perf.trace("load_image");
+  loadImageTrace.start();
+
+  var img = new Image();
+  img.src = latestImage;
+  img.onload = function () {
+    if (photo != null) photo.getContext("2d").drawImage(img, 0, 0);
+  };
+
+  loadImageTrace.stop();
+};
+
+export const SetImageInStorage = (photo, video) => {
+  let createdImage = CreateImage(photo, video);
+
   const setImageInStorageTrace = perf.trace("set_latest_image_in_storage");
   setImageInStorageTrace.start();
 
-  let video = cameraRef.current;
-  pic.getContext("2d").drawImage(video, 0, 0, 120, 90);
-  localStorage.setItem("latest_image_uri", pic.toDataURL("image/jpeg"));
+  localStorage.setItem("latest_image", createdImage);
 
   setImageInStorageTrace.stop();
-
-  const stream = video.srcObject;
-  const tracks = stream.getTracks();
-
-  for (let i = 0; i < tracks.length; i++) {
-    let track = tracks[i];
-    track.stop();
-  }
-
-  video.srcObject = null;
-  setCameraActive(false);
 };
 
-export const GetImage = (photo) => {
+export const GetImageFromStorage = () => {
   const getImageFromStorageTrace = perf.trace("get_latest_image_from_storage");
   getImageFromStorageTrace.start();
 
-  var dataURL = localStorage.getItem("latest_image_uri");
-  
-  var img = new Image();
-  img.src = dataURL;
-  img.onload = function () {
-    if (photo != null)
-      photo.getContext("2d").drawImage(img, 0, 0);
-  };
-  
+  var imageFromStorage = localStorage.getItem("latest_image");
+
   getImageFromStorageTrace.stop();
+
+  return imageFromStorage;
 };
