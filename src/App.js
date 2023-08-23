@@ -8,7 +8,7 @@ import CapturePhoto from "./components/CapturePhoto/CapturePhoto";
 
 import { CurrentLocation } from "./utils/LocationUtil";
 import { GetWeatherDataFromLocationLatLon } from "./utils/DownloadUtil";
-import { GetImageFromStorage, LoadImage } from "./utils/StorageUtil";
+import { LoadImage } from "./utils/StorageUtil";
 
 function App() {
   let currentLocation = CurrentLocation();
@@ -19,9 +19,7 @@ function App() {
   const photoRef = useRef(null);
 
   useEffect(() => {
-    var latestImage = GetImageFromStorage();
-
-    LoadImage(photoRef, latestImage);
+    LoadImage(photoRef);
   });
 
   useEffect(() => {

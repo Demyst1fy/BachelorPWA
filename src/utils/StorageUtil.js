@@ -12,19 +12,22 @@ const CreateImage = (photo, video) => {
   return picToDataURL;
 };
 
-export const LoadImage = (photoRef, latestImage) => {
+export const LoadImage = (photoRef) => {
   let photo = photoRef.current;
+  var latestImage = GetImageFromStorage();
 
-  const loadImageTrace = perf.trace("load_image");
-  loadImageTrace.start();
+  if (latestImage != null) {
+    const loadImageTrace = perf.trace("load_image");
+    loadImageTrace.start();
 
-  var img = new Image();
-  img.src = latestImage;
-  img.onload = function () {
-    if (photo != null) photo.getContext("2d").drawImage(img, 0, 0);
-  };
+    var img = new Image();
+    img.src = latestImage;
+    img.onload = function () {
+      if (photo != null) photo.getContext("2d").drawImage(img, 0, 0);
+    };
 
-  loadImageTrace.stop();
+    loadImageTrace.stop();
+  }
 };
 
 export const SetImageInStorage = (photo, video) => {
@@ -38,7 +41,7 @@ export const SetImageInStorage = (photo, video) => {
   setImageInStorageTrace.stop();
 };
 
-export const GetImageFromStorage = () => {
+const GetImageFromStorage = () => {
   const getImageFromStorageTrace = perf.trace("get_latest_image_from_storage");
   getImageFromStorageTrace.start();
 
