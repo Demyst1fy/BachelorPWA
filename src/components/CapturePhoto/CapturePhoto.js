@@ -15,7 +15,7 @@ const CapturePhoto = ({ setCameraActive, videoRef, photoRef }) => {
         <Button
           onClick={() => {
             let video = videoRef.current;
-            SetImageInStorage(photo, video, setCameraActive);
+            SetImageInStorage(photo, video);
 
             const stream = video.srcObject;
             const tracks = stream.getTracks();
