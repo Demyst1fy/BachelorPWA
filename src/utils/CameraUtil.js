@@ -16,10 +16,10 @@ export const GetVideo = (cameraRef) => {
         let video = cameraRef.current;
         video.srcObject = stream;
       }
+
+      cameraActivationTrace.stop();
     })
     .catch((err) => {
       console.error("error:", err);
     });
-
-  cameraActivationTrace.stop();
 };

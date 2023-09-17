@@ -11,18 +11,16 @@ export const CurrentLocation = () => {
       if (result.state === "granted" || result.state === "prompt") {
         const geoLocationTrace = perf.trace("get_geolocation");
         geoLocationTrace.start();
-  
+
         navigator.geolocation.getCurrentPosition((position) => {
           setLat(position.coords.latitude);
           setLng(position.coords.longitude);
           setZoom(18);
+          geoLocationTrace.stop();
         });
-  
-        geoLocationTrace.stop();
       }
     });
   }, [lat, lng, zoom]);
-  
-  
+
   return { lat: lat, lng: lng, zoom: zoom };
 };

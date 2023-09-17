@@ -55,7 +55,7 @@ const CurrentData = ({ currentData, photoRef }) => {
           <tr>
             <th style={{ textAlign: "left" }}>Foto: </th>
             <td style={{ textAlign: "left" }}>
-              <canvas ref={photoRef} width="120" height="90" />
+              <canvas ref={photoRef} width="240" height="180" />
             </td>
           </tr>
         </tbody>

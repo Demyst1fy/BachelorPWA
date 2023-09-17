@@ -13,7 +13,7 @@ export const CheckAndRequestNotification = (currentData) => {
 };
 
 const DisplayNotification = (currentData) => {
-  const pushNotificationTrace = perf.trace("create_push_notification");
+  const pushNotificationTrace = perf.trace("create_notification");
   pushNotificationTrace.start();
 
   navigator.serviceWorker.getRegistration().then((reg) => {
@@ -36,9 +36,7 @@ const DisplayNotification = (currentData) => {
         currentData?.weather[0]?.icon +
         "@2x.png",
     };
-    console.log(currentData?.name);
     reg?.showNotification(currentData?.name, options);
+    pushNotificationTrace.stop();
   });
-
-  pushNotificationTrace.stop();
 };
