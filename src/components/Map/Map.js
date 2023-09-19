@@ -66,15 +66,16 @@ const Map = ({
       </Button>
       <Button
         onClick={() => {
-          if (!micActive) {
-            MicrophoneOn(setTranscript, setMicActive);
-          } else {
-            MicrophoneOff(setTranscript, setMicActive);
-          }
+          MicrophoneOn(setTranscript, setMicActive);
         }}
+        disabled={!micActive ? false : true}
         variant="contained"
         size="small"
-        style={{ margin: "5px", color: "#FFFFFF", backgroundColor: "#ED6C02" }}
+        style={
+          !micActive
+            ? { margin: "5px", color: "#FFFFFF", backgroundColor: "#ED6C02" }
+            : { margin: "5px", color: "#555555", backgroundColor: "#E7E7E7" }
+        }
         endIcon={<Mic />}
       >
         {!micActive ? "Standort per Mikrofon scannen" : "Stopp Aufnahme..."}
